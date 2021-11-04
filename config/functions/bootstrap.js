@@ -19,7 +19,7 @@ const {
 } = require('./utils/database');
 
 module.exports = () => {
-    const io = require('socket.io')(strapi.server, {
+    const ioServer = require('socket.io')(strapi.server, {
         cors: {
             origin: 'http://localhost:3000',
             methods: ['GET', 'POST'],
@@ -28,7 +28,7 @@ module.exports = () => {
         }
     });
 
-    io.on('connection', (socket) => {
+    ioServer.on('connection', (socket) => {
         socket.on('join', async({ username, room }) => {
             try {
                 const userExists = await findUser(username, room);
@@ -53,7 +53,7 @@ module.exports = () => {
                             text: `${user.username} has joined`,
                         });
 
-                        io.to(user.room).emit('roomInfo', {
+                        ioServer.to(user.room).emit('roomInfo', {
                             room: user.room,
                             users: await getUsersInRoom(user.room)
                         });
@@ -71,7 +71,7 @@ module.exports = () => {
                 const user = await userExists(data.userId);
 
                 if(user) {
-                    io.to(user.room).emit('message', {
+                    ioServer.to(user.room).emit('message', {
                         user: user.username,
                         text: data.message,
                     });
@@ -89,11 +89,11 @@ module.exports = () => {
                 const user = await deleteUser(socket.id);
                 strapi.log.info('deleted user is', user)
                 if(user.length > 0) {
-                    io.to(user[0].room).emit('message', {
+                    ioServer.to(user[0].room).emit('message', {
                         user: user[0].username,
                         text: `User ${user[0].username} has left the chat.`,
                     });  
-                    io.to(user.room).emit('roomInfo', {
+                    ioServer.to(user.room).emit('roomInfo', {
                         room: user.room,
                         users: await getUsersInRoom(user[0].room)
                     });

@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/users",
-      "handler": "users.find",
+      "path": "/messages",
+      "handler": "message.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/users/count",
-      "handler": "users.count",
+      "path": "/messages/count",
+      "handler": "message.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/users/:id",
-      "handler": "users.findOne",
+      "path": "/messages/:id",
+      "handler": "message.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/users",
-      "handler": "users.create",
+      "path": "/messages",
+      "handler": "message.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/users/:id",
-      "handler": "users.update",
+      "path": "/messages/:id",
+      "handler": "message.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/users/:id",
-      "handler": "users.delete",
+      "path": "/messages/:id",
+      "handler": "message.delete",
       "config": {
         "policies": []
       }

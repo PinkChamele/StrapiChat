@@ -1,18 +1,18 @@
 {
   "paths": {
-    "/users": {
+    "/rooms": {
       "get": {
         "deprecated": false,
-        "description": "Find all the users's records",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve users document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Users"
+                    "$ref": "#/components/schemas/Room"
                   }
                 }
               }
@@ -51,7 +51,7 @@
         },
         "summary": "",
         "tags": [
-          "Users"
+          "Room"
         ],
         "parameters": [
           {
@@ -194,14 +194,14 @@
       },
       "post": {
         "deprecated": false,
-        "description": "Create a new users record",
+        "description": "Create a new record",
         "responses": {
           "200": {
-            "description": "Retrieve users document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Users"
+                  "$ref": "#/components/schemas/Room"
                 }
               }
             }
@@ -239,7 +239,7 @@
         },
         "summary": "",
         "tags": [
-          "Users"
+          "Room"
         ],
         "requestBody": {
           "description": "",
@@ -247,20 +247,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUsers"
+                "$ref": "#/components/schemas/NewRoom"
               }
             }
           }
         }
       }
     },
-    "/users/count": {
+    "/rooms/count": {
       "get": {
         "deprecated": false,
-        "description": "Retrieve the number of users documents",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve users document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -306,22 +306,22 @@
         },
         "summary": "",
         "tags": [
-          "Users"
+          "Room"
         ],
         "parameters": []
       }
     },
-    "/users/{id}": {
+    "/rooms/{id}": {
       "get": {
         "deprecated": false,
-        "description": "Find one users record",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Retrieve users document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Users"
+                  "$ref": "#/components/schemas/Room"
                 }
               }
             }
@@ -359,7 +359,7 @@
         },
         "summary": "",
         "tags": [
-          "Users"
+          "Room"
         ],
         "parameters": [
           {
@@ -376,14 +376,14 @@
       },
       "put": {
         "deprecated": false,
-        "description": "Update a single users record",
+        "description": "Update a record",
         "responses": {
           "200": {
-            "description": "Retrieve users document(s)",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Users"
+                  "$ref": "#/components/schemas/Room"
                 }
               }
             }
@@ -421,7 +421,7 @@
         },
         "summary": "",
         "tags": [
-          "Users"
+          "Room"
         ],
         "requestBody": {
           "description": "",
@@ -429,7 +429,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUsers"
+                "$ref": "#/components/schemas/NewRoom"
               }
             }
           }
@@ -449,10 +449,10 @@
       },
       "delete": {
         "deprecated": false,
-        "description": "Delete a single users record",
+        "description": "Delete a record",
         "responses": {
           "200": {
-            "description": "deletes a single users based on the ID supplied",
+            "description": "deletes a single record based on the ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -495,7 +495,7 @@
         },
         "summary": "",
         "tags": [
-          "Users"
+          "Room"
         ],
         "parameters": [
           {
@@ -514,7 +514,7 @@
   },
   "components": {
     "schemas": {
-      "Users": {
+      "Room": {
         "required": [
           "id"
         ],
@@ -522,14 +522,56 @@
           "id": {
             "type": "string"
           },
-          "username": {
+          "Name": {
             "type": "string"
           },
-          "room": {
-            "type": "string"
-          },
-          "socketId": {
-            "type": "string"
+          "users_permissions_users": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "username",
+                "email"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "resetPasswordToken": {
+                  "type": "string"
+                },
+                "confirmationToken": {
+                  "type": "string"
+                },
+                "confirmed": {
+                  "type": "boolean"
+                },
+                "blocked": {
+                  "type": "boolean"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "published_at": {
             "type": "string",
@@ -537,16 +579,16 @@
           }
         }
       },
-      "NewUsers": {
+      "NewRoom": {
         "properties": {
-          "username": {
+          "Name": {
             "type": "string"
           },
-          "room": {
-            "type": "string"
-          },
-          "socketId": {
-            "type": "string"
+          "users_permissions_users": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "published_at": {
             "type": "string",
@@ -564,7 +606,7 @@
   },
   "tags": [
     {
-      "name": "Users"
+      "name": "Room"
     }
   ]
 }

@@ -1,9 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "users",
+  "collectionName": "rooms",
   "info": {
-    "name": "Users",
-    "description": ""
+    "name": "Room"
   },
   "options": {
     "increments": true,
@@ -12,14 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "username": {
+    "Name": {
       "type": "string"
     },
-    "room": {
-      "type": "string"
-    },
-    "socketId": {
-      "type": "string"
+    "users_permissions_users": {
+      "plugin": "users-permissions",
+      "collection": "user"
     }
   }
 }
