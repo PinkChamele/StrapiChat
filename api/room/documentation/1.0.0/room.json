@@ -254,7 +254,7 @@
         }
       }
     },
-    "/rooms/count": {
+    "/rooms/findByUser/{userId}": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -265,8 +265,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "count": {
-                      "type": "integer"
+                    "foo": {
+                      "type": "string"
                     }
                   }
                 }
@@ -308,62 +308,9 @@
         "tags": [
           "Room"
         ],
-        "parameters": []
-      }
-    },
-    "/rooms/{id}": {
-      "get": {
-        "deprecated": false,
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Room"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "summary": "",
-        "tags": [
-          "Room"
-        ],
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
             "in": "path",
             "description": "",
             "deprecated": false,
@@ -373,17 +320,23 @@
             }
           }
         ]
-      },
-      "put": {
+      }
+    },
+    "/rooms/addUser/{id}": {
+      "post": {
         "deprecated": false,
-        "description": "Update a record",
+        "description": "Create a new record",
         "responses": {
           "200": {
             "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Room"
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -429,35 +382,28 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewRoom"
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "deprecated": false,
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      },
-      "delete": {
+        }
+      }
+    },
+    "/rooms/{id}": {
+      "get": {
         "deprecated": false,
-        "description": "Delete a record",
+        "description": "",
         "responses": {
           "200": {
-            "description": "deletes a single record based on the ID supplied",
+            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Room"
                 }
               }
             }

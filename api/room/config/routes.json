@@ -10,8 +10,16 @@
     },
     {
       "method": "GET",
-      "path": "/rooms/count",
-      "handler": "room.count",
+      "path": "/rooms/findByUser/:userId",
+      "handler": "room.findByUser",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/rooms/addUser/:id",
+      "handler": "room.addUser",
       "config": {
         "policies": []
       }
@@ -28,22 +36,6 @@
       "method": "POST",
       "path": "/rooms",
       "handler": "room.create",
-      "config": {
-        "policies": []
-      }
-    },
-    {
-      "method": "PUT",
-      "path": "/rooms/:id",
-      "handler": "room.update",
-      "config": {
-        "policies": []
-      }
-    },
-    {
-      "method": "DELETE",
-      "path": "/rooms/:id",
-      "handler": "room.delete",
       "config": {
         "policies": []
       }
