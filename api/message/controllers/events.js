@@ -5,7 +5,7 @@ module.exports = () => {
         socket.on('sendMessage', async (data) => {
             try {
                 const message = {
-                    user: socket.state.user._id,
+                    users_permissions_user: socket.state.user._id,
                     ...data,
                 }
                 io.emit('message', await strapi.controllers.message.create(message));
