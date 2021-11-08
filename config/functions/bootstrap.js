@@ -1,5 +1,6 @@
 'use strict';
 
+const messageSocketEvents = require(`../../api/message/controllers/events`);
 /**
  * An asynchronous bootstrap function that runs before
  * your application gets started.
@@ -11,7 +12,15 @@
  */
 
 module.exports = () => {
-    process.nextTick(() => {
-        strapi.StrapIO = (require("strapio"))(strapi);
+    strapi.socketIO = require('socket.io')(strapi.server, {
+        cors: {
+          origin: "http://localhost:3000",
+          methods: ["GET", "POST"],
+          allowedHeaders: ["my-custom-header"],
+          credentials: true
+        },
+        noServer: true,
     });
+
+    messageSocketEvents();
 };
