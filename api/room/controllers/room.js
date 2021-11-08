@@ -8,53 +8,20 @@ const { sanitizeEntity } = require('strapi-utils');
 
 module.exports = {  
     async create(ctx) {
-        let entity;
+        const room = await strapi.services.room.create(ctx.request.body);
 
-        if (ctx.is('multipart')) {
-            const { data, files } = parseMultipartData(ctx);
-
-            entity = await strapi.services.room.create(data, { files });
-        } else {
-            entity = await strapi.services.room.create(ctx.request.body);
-        }
-
-        return sanitizeEntity(entity, { model: strapi.models.room });
-    },
-
-    async find(ctx) {
-        let entities;
-
-        if (ctx.query._q) {
-            entities = await strapi.services.room.search(ctx.query);
-        } else {
-            entities = await strapi.services.room.find(ctx.query);
-        }
-
-        return entities.map(entity => sanitizeEntity(entity, { model: strapi.models.room }));
+        return sanitizeEntity(room, { model: strapi.models.room });
     },
 
     async findByUser(ctx) {
-        let entities;
+        const rooms = await strapi.services.room.find({ users_permissions_users: { $in: [ctx.params.userId] } });
 
-        entities = await strapi.services.room.findByUser(ctx.params.userId);
-
-        return entities.map(entity => sanitizeEntity(entity, { model: strapi.models.room }));
+        return rooms.map(room => sanitizeEntity(room, { model: strapi.models.room }));
     },
 
     async addUser(ctx) {
-        const { id } = ctx.params;
-        let entity;
-
-        if (ctx.is('multipart')) {
-            const { data, files } = parseMultipartData(ctx);
-
-            entity = await strapi.services.room.addUser({ id }, data, {
-                files,
-            });
-        } else {
-            entity = await strapi.services.room.addUser({ id }, ctx.request.body.userId);
-        }
+        const room = await strapi.services.room.addUser({ id: ctx.params.id }, ctx.request.body.userId);
     
-        return sanitizeEntity(entity, { model: strapi.models.room });
+        return sanitizeEntity(room, { model: strapi.models.room });
     },
 };

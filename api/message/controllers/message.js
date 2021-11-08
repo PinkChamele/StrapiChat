@@ -7,11 +7,16 @@ const { sanitizeEntity } = require('strapi-utils');
  */
 
 module.exports = {
-  async socketCreate(data) {
-        message = await strapi.services.message.create(data);
+	async create(data) {
+		const message = await strapi.services.message.create(data);
 
-    
-        return sanitizeEntity(entity, { model: strapi.models.message });
-    },   
+    	return sanitizeEntity(message, { model: strapi.models.message });
+	},
+	
+	async getByRoom(room) {
+		const messages = await strapi.services.message.find({ room });
+
+		return messages.map(message => sanitizeEntity(message, { model: strapi.models.message }));
+	},
 };
 

@@ -25,6 +25,14 @@
       }
     },
     {
+      "method": "GET",
+      "path": "/messages/getByRoom/:id",
+      "handler": "message.getByRoom",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "POST",
       "path": "/messages",
       "handler": "message.create",

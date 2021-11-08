@@ -18,7 +18,7 @@
     },
     {
       "method": "POST",
-      "path": "/rooms/addUser/:id",
+      "path": "/rooms/join/:id",
       "handler": "room.addUser",
       "config": {
         "policies": []

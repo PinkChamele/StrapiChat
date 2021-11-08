@@ -1,6 +1,7 @@
 'use strict';
 
-const messageSocketEvents = require(`../../api/message/controllers/events`);
+const messageSocketEvents = require('../../api/message/controllers/events');
+const isAuthenticated = require('../policies/is-socket-authenticated');
 /**
  * An asynchronous bootstrap function that runs before
  * your application gets started.
@@ -12,14 +13,11 @@ const messageSocketEvents = require(`../../api/message/controllers/events`);
  */
 
 module.exports = () => {
-    strapi.socketIO = require('socket.io')(strapi.server, {
-        cors: {
-          origin: "http://localhost:3000",
-          methods: ["GET", "POST"],
-          allowedHeaders: ["my-custom-header"],
-          credentials: true
-        },
-        noServer: true,
+    strapi.socketIO = require('socket.io')(strapi.server);
+
+    strapi.socketIO.use(isAuthenticated)
+    .on('connection', (socket) => {
+        console.log(`connection created, username: ${ socket.state.user.username }`);
     });
 
     messageSocketEvents();

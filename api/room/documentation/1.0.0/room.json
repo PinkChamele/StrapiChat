@@ -322,7 +322,7 @@
         ]
       }
     },
-    "/rooms/addUser/{id}": {
+    "/rooms/join/{id}": {
       "post": {
         "deprecated": false,
         "description": "Create a new record",

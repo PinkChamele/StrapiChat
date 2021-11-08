@@ -20,20 +20,13 @@ module.exports = {
         return strapi.query('message').findOne(params, populate);
     },
 
-    async create(data, { files } = {}) {
+    async create(data) {
         const validData = await strapi.entityValidator.validateEntityCreation(
             strapi.models.message,
             data,
             { isDraft: isDraft(data, strapi.models.message) }
         );
         const entry = await strapi.query('message').create(validData);
-
-        if (files) {
-            await strapi.entityService.uploadFiles(entry, files, {
-                model: 'message',
-            });
-            return this.findOne({ id: entry.id });
-        }
 
         return entry;
     },
