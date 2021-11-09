@@ -10,7 +10,7 @@
     },
     {
       "method": "GET",
-      "path": "/rooms/findByUser/:userId",
+      "path": "/rooms/findByUser",
       "handler": "room.findByUser",
       "config": {
         "policies": []
@@ -19,7 +19,7 @@
     {
       "method": "POST",
       "path": "/rooms/join/:id",
-      "handler": "room.addUser",
+      "handler": "room.joinRoom",
       "config": {
         "policies": []
       }
@@ -27,7 +27,7 @@
     {
       "method": "GET",
       "path": "/rooms/:id",
-      "handler": "room.findOne",
+      "handler": "room.findOneUnpopulated",
       "config": {
         "policies": []
       }

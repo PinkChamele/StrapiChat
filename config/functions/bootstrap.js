@@ -1,7 +1,7 @@
 'use strict';
 
 const messageSocketEvents = require('../../api/message/controllers/events');
-const isAuthenticated = require('../policies/is-socket-authenticated');
+const roomSocketEvents = require('../../api/room/controllers/events');
 /**
  * An asynchronous bootstrap function that runs before
  * your application gets started.
@@ -15,10 +15,14 @@ const isAuthenticated = require('../policies/is-socket-authenticated');
 module.exports = () => {
     strapi.socketIO = require('socket.io')(strapi.server);
 
-    strapi.socketIO.use(isAuthenticated)
-    .on('connection', (socket) => {
+    strapi.socketIO.use(strapi.config.policies['verify-socket-token'])
+    .on('connection', async (socket) => {
+        const userRooms = await strapi.services.room.find({ users_permissions_users: { $in: [socket.state.user._id] } });
+
+        userRooms.forEach((room) => socket.join(room.name));
         console.log(`connection created, username: ${ socket.state.user.username }`);
     });
 
     messageSocketEvents();
+    roomSocketEvents();
 };

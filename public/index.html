@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srapi chat</title>
+</head>
+<body>
+    <div id="current_room_name"></div>
+    <div id="chat_block">
+        <div id="chat_list"></div>
+    </div>
+    <div class="message_block">
+        <form autocomplete="off" id="message_form">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" id="message_input" required placeholder="Type a message" />
+            </div>
+            <button type="submit">Enter</button>
+        </form>
+        <ul id="message_container"></ul>
+    </div>
+    <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"
+		integrity="sha384-toS6mmwu70G0fw54EGlWWeA4z3dyJ+dlXBtSURSKN4vyRFOcxd3Bzjj/AoOwY+Rg"
+		crossorigin="anonymous">
+    </script>
+    <script>
+        let currentRoom;
+        let socket;
+        const currentRoomName = document.getElementById('current_room_name');
+        const messageContainer = document.getElementById('message_container');
+        const messageForm = document.getElementById('message_form');
+        const inputField = document.getElementById('message_input');
+        const chatContainer = document.getElementById('chat_list');
+
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+    
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        
+        function checkLogin() {
+            const accessToken = getCookie('accessToken');
+    
+            if (accessToken) {
+                socket = io('http://localhost:1337/', {
+                    query: 'token=' + accessToken
+                });
+            } else {
+                window.location.href = './login.html';
+            }
+        }
+
+        function sendMessage(room, text) {
+            console.log({
+                room,
+                text,
+            });
+            socket.emit('sendMessage', {
+                room,
+                text,
+            });
+        }
+
+        function joinRoom(id) {
+            socket.emit('join', {
+                id,
+            });
+        }
+        
+        function getRoomMessages(roomId) {
+            socket.emit('getAllMessages', {
+                roomId,
+            });
+        }
+
+        async function getAllRooms() {
+            const accessToken = getCookie('accessToken');
+            const response = await fetch('/rooms/findByUser', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${ accessToken }`,
+                },
+            });
+            const responseBody = await response.json();
+
+            console.log(responseBody);
+
+            return responseBody;
+        }
+
+        function handleEvent(event, handler) {
+            socket.on(event, (data) => {
+                handler(data);
+            });
+        }
+    
+        function showMessage(data) {
+            messageContainer.innerHTML += `<li class="list-group-item"> ${data.users_permissions_user.username}: ${data.text} </li>`;
+        }
+    
+        function showErrorMessage(error) {
+            messageContainer.innerHTML += `<li class="list-group-item"> Message not delivered ${ error } </li>`;
+        }
+    
+        function showRooms(data) {
+            let rooms = '';
+
+            data.forEach((room) => {
+                const roomId = room._id;
+
+                rooms += `<button id="room_${roomId}"> ${room.name} </button>`;
+            });
+            chatContainer.innerHTML = rooms;
+            data.forEach((room) => {
+                const roomId = room._id;
+
+                document.getElementById(`room_${roomId}`).onclick = () => selectRoom(roomId);
+            });
+        }
+
+        async function selectRoom(roomId) {
+            currentRoom = roomId;
+            currentRoomName.innerHTML = currentRoom;
+            
+            messageContainer.innerHTML = '';
+            getRoomMessages(currentRoom);
+        }
+
+        checkLogin();
+        handleEvent('message', showMessage);
+        handleEvent('error', showErrorMessage);
+        handleEvent('allMessages', (data) => data.forEach((message) => showMessage(message)));
+    
+        messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (currentRoom) {
+                sendMessage(currentRoom, inputField.value);
+                inputField.value = '';
+            }
+        });
+
+        (async () => {
+            showRooms(await getAllRooms());
+        })()
+
+        getRoomMessages(currentRoom);
+    </script>
+</body>
+</html>

@@ -643,7 +643,7 @@
               "id": {
                 "type": "string"
               },
-              "Name": {
+              "name": {
                 "type": "string"
               },
               "users_permissions_users": {

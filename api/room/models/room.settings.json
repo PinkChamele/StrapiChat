@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "rooms",
   "info": {
-    "name": "Room"
+    "name": "Room",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -11,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Name": {
+    "name": {
       "type": "string"
     },
     "users_permissions_users": {

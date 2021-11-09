@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "11/08/2021 2:38:44 PM"
+    "x-generation-date": "11/09/2021 12:11:54 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -878,7 +878,7 @@
         }
       }
     },
-    "/rooms/findByUser/{userId}": {
+    "/rooms/findByUser": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -932,18 +932,7 @@
         "tags": [
           "Room"
         ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "",
-            "deprecated": false,
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
+        "parameters": []
       }
     },
     "/rooms/join/{id}": {
@@ -1027,7 +1016,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Room"
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -3371,7 +3364,7 @@
               "id": {
                 "type": "string"
               },
-              "Name": {
+              "name": {
                 "type": "string"
               },
               "users_permissions_users": {
@@ -3431,7 +3424,7 @@
           "id": {
             "type": "string"
           },
-          "Name": {
+          "name": {
             "type": "string"
           },
           "users_permissions_users": {
@@ -3490,7 +3483,7 @@
       },
       "NewRoom": {
         "properties": {
-          "Name": {
+          "name": {
             "type": "string"
           },
           "users_permissions_users": {

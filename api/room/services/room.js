@@ -13,6 +13,10 @@ module.exports = {
         return strapi.query('room').find(params, populate);
     },
 
+    findOneUnpopulated(params) {
+        return strapi.query('room').model.findOne(params);
+    },
+
     search(params) {
         return strapi.query('room').search(params);
     },
@@ -32,7 +36,7 @@ module.exports = {
         return entry;
     },
 
-    async addUser(params, userId) {
+    async joinRoom(params, userId) {
         const existingEntry = await this.findOne(params);
         const validData = await strapi.entityValidator.validateEntityUpdate(
             strapi.models.room,

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srapi chat</title>
+</head>
+<body>
+    <form id="authForm">
+        <div class="form-group">
+            <label for="emailInput">Username</label>
+            <input type="text" id="usernameInput" placeholder="Enter username">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" id="passwordInput" placeholder="Password">
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <script>
+        const passwordInput = document.getElementById('passwordInput');
+        const usernameInput = document.getElementById('usernameInput');
+        const authForm = document.getElementById('authForm');
+    
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                identifier: usernameInput.value,
+                password: passwordInput.value,
+            };
+            const response = await fetch('/auth/local/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+            });
+            const responseBody = await response.json();
+    
+            document.cookie = "accessToken=" + responseBody.jwt;
+            window.location.href = './index.html';
+        });
+    </script>
+</body>
+</html>

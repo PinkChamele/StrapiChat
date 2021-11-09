@@ -13,15 +13,21 @@ module.exports = {
         return sanitizeEntity(room, { model: strapi.models.room });
     },
 
+    async findOneUnpopulated(ctx) {
+        const room = await strapi.services.room.findOneUnpopulated({ _id: ctx.params.id });
+
+        return sanitizeEntity(room, { model: strapi.models.room });
+    },
+
     async findByUser(ctx) {
-        const rooms = await strapi.services.room.find({ users_permissions_users: { $in: [ctx.params.userId] } });
+        const rooms = await strapi.services.room.find({ users_permissions_users: { $in: [ctx.state.user._id] } });
 
         return rooms.map(room => sanitizeEntity(room, { model: strapi.models.room }));
     },
 
-    async addUser(ctx) {
-        const room = await strapi.services.room.addUser({ id: ctx.params.id }, ctx.request.body.userId);
-    
+    async joinRoom(ctx) {
+        const room = await strapi.services.room.joinRoom({ id: ctx.params.id }, ctx.state.user._id);
+
         return sanitizeEntity(room, { model: strapi.models.room });
     },
 };

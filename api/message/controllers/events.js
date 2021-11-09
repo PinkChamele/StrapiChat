@@ -7,8 +7,10 @@ module.exports = () => {
                 const message = {
                     users_permissions_user: socket.state.user._id,
                     ...data,
-                }
-                io.emit('message', await strapi.controllers.message.create(message));
+                };
+                const room = await strapi.services.room.findOne({ id: data.room });
+
+                io.to(room.name).emit('message', await strapi.controllers.message.create(message));
             } catch (error) {
                 socket.emit('error', error);
             }
