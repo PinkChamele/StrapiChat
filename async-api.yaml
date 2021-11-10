@@ -1,0 +1,135 @@
+asyncapi: 2.2.0
+
+info:
+  title: Strapi soket.io chat
+  version: 1.0.0
+
+
+channels:
+  /:
+    publish:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/SendMessage"
+          - $ref: "#/components/messages/GetAllMessages"
+          - $ref: "#/components/messages/Join"
+    subscribe:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/Message"
+          #- $ref: "#/components/messages/AllMessages"
+components:
+  messages:
+    SendMessage:
+      name: sendMessage
+      payload:
+        type: object
+        properties:
+          room:
+            type: string
+          text:
+            type: string
+    GetAllMessages:
+      name: getAllMessages
+      payload:
+        type: object
+        properties:
+          roomId:
+            type: string
+    AllMessages:
+      name: allMessages
+      payload:
+        type: array
+        prefixItems:
+            type:
+              $ref: "#/components/schemas/message"
+    Message:
+      name: message
+      payload:
+        $ref: "#/components/schemas/message"
+    Join:
+      name: join
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
+
+  schemas:
+    message:
+      type: object
+      properties:
+        _id: 
+          type: string
+        text: 
+          type: string
+        published_at:
+          $ref: "#/components/schemas/dateTime"
+        createdAt:
+          $ref: "#/components/schemas/dateTime"
+        updatedAt:
+          $ref: "#/components/schemas/dateTime"
+        __v: 
+          type: number
+          minimum: 0
+        room:
+          $ref: "#/components/schemas/room"
+        users_permissions_user:
+          $ref: "#/components/schemas/users_permissions_user"
+        id:
+          type: string
+
+    room:
+      type: object
+      properties:
+        users_permissions_user:
+          type: array
+          prefixItems:
+            type:
+              $ref: "#/components/schemas/users_permissions_user"
+        _id:
+          type: string
+        name:
+          type: string
+        published_at:
+          $ref: "#/components/schemas/dateTime"
+        createdAt:
+          $ref: "#/components/schemas/dateTime"
+        updatedAt:
+          $ref: "#/components/schemas/dateTime"
+        __v: 
+          type: number
+          minimum: 0
+        id:
+          type: string
+
+    users_permissions_user:
+      type: object
+      properties:
+        confirmed: 
+          type: boolean
+          default: false
+        blocked: 
+          type: boolean
+          default: false
+        _id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        provider:
+          type: string
+        createdAt:
+          $ref: "#/components/schemas/dateTime"
+        updatedAt:
+          $ref: "#/components/schemas/dateTime"
+        __v: 
+          type: number
+          minimum: 0
+        id:
+          type: string
+
+    dateTime:
+      type: string
+      format: date-time

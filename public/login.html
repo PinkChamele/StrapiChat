@@ -7,6 +7,7 @@
     <title>Srapi chat</title>
 </head>
 <body>
+    <div id="invalidCredentials"></div>
     <form id="authForm">
         <div class="form-group">
             <label for="emailInput">Username</label>
@@ -37,9 +38,13 @@
                     body: JSON.stringify(data),
             });
             const responseBody = await response.json();
-    
-            document.cookie = "accessToken=" + responseBody.jwt;
-            window.location.href = './index.html';
+
+            if (responseBody.error) {
+                document.getElementById('invalidCredentials').innerHTML = responseBody.data[0].messages[0].message;
+            } else {
+                document.cookie = "accessToken=" + responseBody.jwt;
+                window.location.href = './index.html'; 
+            }
         });
     </script>
 </body>

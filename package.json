@@ -13,6 +13,8 @@
     "cz-conventional-changelog": "^3.3.0"
   },
   "dependencies": {
+    "@asyncapi/generator": "^1.8.19",
+    "@asyncapi/html-template": "^0.16.0",
     "commitizen": "^4.2.4",
     "jsonwebtoken": "^8.5.1",
     "socket.io": "^4.3.1",
