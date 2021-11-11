@@ -46,8 +46,13 @@
             const accessToken = getCookie('accessToken');
     
             if (accessToken) {
-                socket = io('http://localhost:1337/', {
-                    query: 'token=' + accessToken
+                socket = io({
+                    query: 'token=' + accessToken,
+                    transports: ['websocket']
+                });
+
+                socket.on('connect_error', () => {
+                    window.location.href = './login.html';
                 });
             } else {
                 window.location.href = './login.html';
@@ -55,10 +60,6 @@
         }
 
         function sendMessage(room, text) {
-            console.log({
-                room,
-                text,
-            });
             socket.emit('sendMessage', {
                 room,
                 text,

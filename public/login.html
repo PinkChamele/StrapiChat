@@ -39,8 +39,8 @@
             });
             const responseBody = await response.json();
 
-            if (responseBody.error) {
-                document.getElementById('invalidCredentials').innerHTML = responseBody.data[0].messages[0].message;
+            if (!responseBody.jwt) {
+                document.getElementById('invalidCredentials').innerHTML = 'Invalid credentials';
             } else {
                 document.cookie = "accessToken=" + responseBody.jwt;
                 window.location.href = './index.html'; 

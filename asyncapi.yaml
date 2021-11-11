@@ -4,7 +4,6 @@ info:
   title: Strapi soket.io chat
   version: 1.0.0
 
-
 channels:
   /:
     publish:
@@ -17,7 +16,10 @@ channels:
       message:
         oneOf:
           - $ref: "#/components/messages/Message"
-          #- $ref: "#/components/messages/AllMessages"
+          - $ref: "#/components/messages/Error"
+          - $ref: "#/components/messages/AllMessages"
+    bindings:
+      $ref: "#/components/channelBindings/AuthenticatedWsBindings"
 components:
   messages:
     SendMessage:
@@ -54,6 +56,10 @@ components:
         properties:
           id:
             type: string
+    Error:
+      name: error
+      payload:
+        type: object
 
   schemas:
     message:
@@ -133,3 +139,13 @@ components:
     dateTime:
       type: string
       format: date-time
+
+  channelBindings:
+    AuthenticatedWsBindings:
+      ws:
+        query:
+          type: object
+          properties:
+            token:
+              type: string
+          required: [token]

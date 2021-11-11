@@ -2,6 +2,9 @@
 
 const messageSocketEvents = require('../../api/message/controllers/events');
 const roomSocketEvents = require('../../api/room/controllers/events');
+const { createAdapter } = require("@socket.io/cluster-adapter");
+const { setupWorker } = require("@socket.io/sticky");
+
 /**
  * An asynchronous bootstrap function that runs before
  * your application gets started.
@@ -14,6 +17,8 @@ const roomSocketEvents = require('../../api/room/controllers/events');
 
 module.exports = () => {
     strapi.socketIO = require('socket.io')(strapi.server);
+    strapi.socketIO.adapter(createAdapter());
+    setupWorker(strapi.socketIO);
 
     strapi.socketIO.use(strapi.config.policies['verify-socket-token'])
     .on('connection', async (socket) => {
