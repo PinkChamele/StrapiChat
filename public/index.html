@@ -45,18 +45,14 @@
         function checkLogin() {
             const accessToken = getCookie('accessToken');
     
-            if (accessToken) {
-                socket = io({
-                    query: 'token=' + accessToken,
-                    transports: ['websocket']
-                });
+            socket = io({
+                query: 'token=' + accessToken,
+                transports: ['websocket']
+            });
 
-                socket.on('connect_error', () => {
-                    window.location.href = './login.html';
-                });
-            } else {
+            socket.on('connect_error', () => {
                 window.location.href = './login.html';
-            }
+            });
         }
 
         function sendMessage(room, text) {

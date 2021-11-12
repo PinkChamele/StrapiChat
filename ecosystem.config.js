@@ -8,8 +8,10 @@ module.exports = {
     env_development: {
         NODE_ENV: "development"
     },
-    instances : "4",
+    instances : "3",
     exec_mode : "cluster",
-    watch: '.'
+    watch: '.',
+    env: { "PORT": 1337 },
+    increment_var : 'PORT'
   }],
 };

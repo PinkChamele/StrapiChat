@@ -2,8 +2,10 @@
 
 const messageSocketEvents = require('../../api/message/controllers/events');
 const roomSocketEvents = require('../../api/room/controllers/events');
-const { createAdapter } = require("@socket.io/cluster-adapter");
-const { setupWorker } = require("@socket.io/sticky");
+const { createClient } = require('redis');
+const redisAdapter = require('@socket.io/redis-adapter');
+const pubClient = createClient({ host: 'localhost', port: 6379 });
+const subClient = pubClient.duplicate();
 
 /**
  * An asynchronous bootstrap function that runs before
@@ -17,8 +19,7 @@ const { setupWorker } = require("@socket.io/sticky");
 
 module.exports = () => {
     strapi.socketIO = require('socket.io')(strapi.server);
-    strapi.socketIO.adapter(createAdapter());
-    setupWorker(strapi.socketIO);
+    strapi.socketIO.adapter(redisAdapter(pubClient, subClient));
 
     strapi.socketIO.use(strapi.config.policies['verify-socket-token'])
     .on('connection', async (socket) => {
